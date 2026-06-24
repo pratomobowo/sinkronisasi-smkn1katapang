@@ -143,6 +143,36 @@
             .nav { padding: 12px; gap: 12px; }
             .nav-btn { width: 44px; height: 44px; }
         }
+
+        @media (max-width: 480px) {
+            body { overflow: auto; position: static; height: auto; }
+            .slide {
+                position: relative;
+                height: auto;
+                min-height: 100dvh;
+                justify-content: flex-start;
+                padding: max(16px, env(safe-area-inset-top)) 16px 120px;
+                top: auto; left: auto;
+                opacity: 0;
+                display: none;
+                transform: none;
+            }
+            .slide.active {
+                opacity: 1;
+                display: flex;
+                position: relative;
+                transform: none;
+                visibility: visible;
+            }
+            .slide-cover.slide.active {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100dvh;
+            }
+            .nav { position: sticky; }
+            .progress { position: fixed; }
+        }
     </style>
 </head>
 <body>

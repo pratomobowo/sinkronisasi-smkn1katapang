@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinkronisasi Kurikulum PPLG — SMKN 1 Katapang × Next IT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f6f3;
+            --bg-card: #ffffff;
+            --bg-subtle: #f5f3f0;
+            --text: #1a1f36;
+            --text-secondary: #556270;
+            --text-muted: #8899aa;
+            --gold: #c9953e;
+            --gold-light: #d4a854;
+            --gold-subtle: #faf6ed;
+            --teal: #1a5c5c;
+            --teal-light: #2a7676;
+            --teal-subtle: #e8f2f2;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --warning: #d97706;
+            --warning-bg: #fffbeb;
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --border: #e2e0dc;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100dvh;
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px 100px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+            visibility: visible;
+        }
+
+        /* Cover Slide */
+        .slide-cover {
+            background: linear-gradient(160deg, #fdfcfa 0%, var(--gold-subtle) 40%, var(--teal-subtle) 100%);
+            text-align: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-decoration {
+            position: absolute;
+            top: -150px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--gold-subtle) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cover-decoration::before {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -200px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--teal-subtle) 0%, transparent 70%);
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .cover-badge {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--teal);
+            background: var(--teal-subtle);
+            padding: 8px 24px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+            border: 1px solid var(--teal);
+        }
+
+        .cover-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .cover-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .cover-meta {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .cover-meta .dot {
+            margin: 0 8px;
+            color: var(--border);
+        }
+
+        /* Slide Elements */
+        .slide-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        .slide-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 900px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        /* Data Cards */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .data-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .data-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .data-value {
+            font-family: var(--font-display);
+            font-size: 2.2em;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .data-value.gold { color: var(--gold); }
+        .data-value.teal { color: var(--teal); }
+        .data-value.danger { color: var(--danger); }
+        .data-value.success { color: var(--success); }
+
+        .data-label {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 32px;
+        }
+
+        .col-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .col-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .col-card ul {
+            list-style: none;
+        }
+
+        .col-card li {
+            padding: 10px 0;
+            padding-left: 28px;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .col-card li:last-child {
+            border-bottom: none;
+        }
+
+        .col-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(20px);
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* Progress Bar */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide { padding: 40px 32px 100px 32px; }
+            .data-grid { grid-template-columns: repeat(2, 1fr); }
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 24px 20px 100px 20px;
+                justify-content: flex-start;
+            }
+            .slide-title { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+            .data-grid { grid-template-columns: 1fr; gap: 16px; }
+            .nav { padding: 12px 16px; }
+            .nav-btn { width: 44px; height: 44px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress" id="progress"></div>
+    
+    <div class="presentation">
+        <!-- Slide 1: Cover -->
+        <section class="slide slide-cover active" data-slide="1">
+            <div class="cover-decoration"></div>
+            <div class="cover-content">
+                <span class="cover-badge">PT Niaga Expert Teknologi</span>
+                <h1 class="cover-title">
+                    Sinkronisasi Kurikulum <span class="highlight">PPLG</span>
+                </h1>
+                <p class="cover-subtitle">
+                    SMKN 1 Katapang × Next IT<br>
+                    Menyelaraskan Pendidikan Vokasi dengan Kebutuhan Industri 2026+
+                </p>
+                <div class="cover-meta">
+                    <span>Pratomo Bowo Leksono — CBO</span>
+                    <span class="dot">•</span>
+                    <span>25 Juni 2026</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Fakta Pahit Lulusan SMK -->
+        <section class="slide" data-slide="2">
+            <p class="slide-label">KONDISI LAPANGAN</p>
+            <h2 class="slide-title">Lulusan SMK — <span class="highlight">Paling Sulit Dapat Kerja</span></h2>
+            <p class="slide-subtitle">Data BPS 2026 menunjukkan TPT lulusan SMK tertinggi dari semua jenjang pendidikan di Indonesia</p>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="data-value danger">7,74%</div>
+                    <div class="data-label">TPT Lulusan SMK<br>(Feb 2026)</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value teal">4,74%</div>
+                    <div class="data-label">TPT Nasional<br>(Nov 2025)</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value danger">>50%</div>
+                    <div class="data-label">Pengangguran<br>SMA/SMK</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value danger">Tertinggi</div>
+                    <div class="data-label">SMK vs SMA,<br>D3, S1</div>
+                </div>
+            </div>
+
+            <div class="two-col" style="margin-top: 40px;">
+                <div class="col-card">
+                    <h3 style="color: var(--danger);">🔴 Penyebab Utama</h3>
+                    <ul>
+                        <li>Kurikulum tidak secepat perubahan industri</li>
+                        <li>AI & otomatisasi mengubah jenis pekerjaan</li>
+                        <li>Soft skill kurang (komunikasi, problem solving)</li>
+                        <li>Jurusan tidak sesuai kebutuhan industri</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="border-left: 4px solid var(--warning);">
+                    <h3 style="color: var(--warning);">⚠️ Tantangan PPLG</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">
+                        Lowongan developer tetap tinggi, tapi skill yang diminta sudah bergeser — <strong>React, TypeScript, Git, AI tools, dan deployment</strong>. Lulusan SMK yang cuma bisa HTML/CSS/JS dasar dan vanilla PHP akan kalah saing.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Kondisi Industri IT 2026 -->
+        <section class="slide" data-slide="3">
+            <p class="slide-label">KABAR BAIK</p>
+            <h2 class="slide-title">Industri IT Tetap Jadi <span class="highlight">Sektor Paling Dicari</span></h2>
+            <p class="slide-subtitle">Data lowongan April-Juni 2026 menunjukkan permintaan developer terus meningkat</p>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="data-value success">3.348</div>
+                    <div class="data-label">Lowongan IT<br>Jobstreet Jun 2026</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value success">196</div>
+                    <div class="data-label">Lowongan IT<br>Indeed Jun 2026</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value gold">3x</div>
+                    <div class="data-label">AI/ML Engineer<br>Growth</div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value teal">🏆</div>
+                    <div class="data-label">Full-stack Dev<br>Paling Dicari</div>
+                </div>
+            </div>
+
+            <div class="two-col" style="margin-top: 40px;">
+                <div class="col-card">
+                    <h3 style="color: var(--teal);">🥇 Skill Kunci 2026</h3>
+                    <ul>
+                        <li><strong>Full-stack development</strong> — React/Next.js + Node.js</li>
+                        <li><strong>AI & prompt engineering</strong> — di setiap peran</li>
+                        <li><strong>Git & version control</strong> — fundamental</li>
+                        <li><strong>Cloud & deployment</strong> — Vercel, Docker, CI/CD</li>
+                        <li><strong>Cybersecurity dasar</strong> — OWASP, secure coding</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--success-bg); border-color: var(--success);">
+                    <h3 style="color: var(--success);">✅ Kenapa Penting untuk SMKN 1 Katapang?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">
+                        PPLG adalah jurusan SMK yang <strong>paling sesuai</strong> dengan kebutuhan industri 2026. Tapi hanya kalau kurikulumnya sinkron dengan permintaan pasar. Data menunjukkan lowongan IT sangat banyak, tapi lulusan SMK PPLG tetap menganggur karena <strong>skill gap</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: AI vs Developer -->
+        <section class="slide" data-slide="4">
+            <p class="slide-label">FAKTA VS HYPE</p>
+            <h2 class="slide-title">AI Akan Ganti Developer? — <span class="highlight">Ini Data Nyatanya</span></h2>
+            
+            <div class="two-col">
+                <div class="col-card" style="border-left: 4px solid var(--danger);">
+                    <h3 style="color: var(--danger);">❌ Yang Beredar di Medsos</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none;">❌ Programmer bakal digantikan AI</li>
+                        <li style="padding-left: 0; border: none;">❌ Ga usah belajar coding, nanti AI yang ngerjain</li>
+                        <li style="padding-left: 0; border: none;">❌ Vibe coding = developer usang</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="border-left: 4px solid var(--success);">
+                    <h3 style="color: var(--success);">✅ Data Nyata 2026</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary);">✅ Hanya <strong style="color: var(--success);">3,3%</strong> dari 1.282 lowongan menyebut AI</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary);">✅ AI adalah skill tambahan, bukan pengganti</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary);">✅ AI ciptakan lebih banyak pekerjaan baru (WEF)</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary);">✅ <strong style="color: var(--success);">83,1%</strong> developer tetap optimis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="data-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 32px;">
+                <div class="data-card" style="background: var(--bg-subtle);">
+                    <div class="data-value" style="font-size: 1.5em;">Dulu (2020)</div>
+                    <div class="data-label" style="margin-top: 12px; line-height: 1.8;">
+                        Nulis semua kode manual<br>
+                        Google + Stack Overflow<br>
+                        Satu bahasa
+                    </div>
+                </div>
+                <div class="data-card" style="background: var(--gold-subtle); border-color: var(--gold);">
+                    <div class="data-value gold" style="font-size: 1.5em;">Sekarang (2024-25)</div>
+                    <div class="data-label" style="margin-top: 12px; line-height: 1.8;">
+                        AI generate 30-50% kode<br>
+                        ChatGPT + Copilot<br>
+                        Multi-framework + AI
+                    </div>
+                </div>
+                <div class="data-card" style="background: var(--teal-subtle); border-color: var(--teal);">
+                    <div class="data-value teal" style="font-size: 1.5em;">Masa Depan (2026+)</div>
+                    <div class="data-label" style="margin-top: 12px; line-height: 1.8;">
+                        Arsitek + AI Orchestrator<br>
+                        Supervisor AI<br>
+                        Adaptasi cepat
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Agenda -->
+        <section class="slide" data-slide="5">
+            <p class="slide-label">AGENDA</p>
+            <h2 class="slide-title">Agenda <span class="highlight">Hari Ini</span></h2>
+            
+            <div style="max-width: 900px; margin: 40px auto;">
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 32px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-sm);">
+                        <div style="width: 48px; height: 48px; background: var(--success-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--success); font-weight: 700; flex-shrink: 0;">✓</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text); margin-bottom: 4px;">Fakta: Kondisi Lulusan SMK & Industri 2026</div>
+                            <div style="font-size: 0.9em; color: var(--text-muted);">Udah kita bahas</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--gold); border-radius: var(--radius-lg); padding: 24px 32px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow);">
+                        <div style="width: 48px; height: 48px; background: var(--gold-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--gold); font-weight: 700; flex-shrink: 0;">2</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text);">Gap Analysis — Kurikulum vs Kebutuhan Industri</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 32px; display: flex; align-items: center; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--bg-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text-muted); font-weight: 700; flex-shrink: 0;">3</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: var(--text);">5 Program Rekomendasi</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 32px; display: flex; align-items: center; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--bg-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text-muted); font-weight: 700; flex-shrink: 0;">4</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: var(--text);">Breakdown Per Semester — Kelas X, XI, XII</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 32px; display: flex; align-items: center; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--bg-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text-muted); font-weight: 700; flex-shrink: 0;">5</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: var(--text);">Implementation Roadmap & Vision 2027-2030</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 32px; display: flex; align-items: center; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--bg-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text-muted); font-weight: 700; flex-shrink: 0;">6</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: var(--text);">Next Steps & Diskusi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Profil Next IT -->
+        <section class="slide" data-slide="6">
+            <p class="slide-label">TENTANG KAMI</p>
+            <h2 class="slide-title">Siapa <span class="highlight">Next IT</span>?</h2>
+            <p class="slide-subtitle">PT Niaga Expert Teknologi — Perusahaan IT Bandung</p>
+            
+            <div class="data-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 32px;">
+                <div class="col-card" style="padding: 40px;">
+                    <h3 style="color: var(--teal); margin-bottom: 20px;">🏢 Layanan</h3>
+                    <ul>
+                        <li>Web Development (Next.js, React, TypeScript)</li>
+                        <li>AI Integration & API Development</li>
+                        <li>CRM & Sistem Informasi</li>
+                        <li>Cloud Deployment & DevOps</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="padding: 40px; background: var(--gold-subtle); border-color: var(--gold);">
+                    <h3 style="color: var(--gold); margin-bottom: 20px;">⭐ Value Proposisi Unik</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">
+                            ✓ Tim eksekusi dev — <strong>bukan cuma konsultan</strong>, tapi ngoding setiap hari
+                        </li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">
+                            ✓ Bisa kirim langsung praktisi sebagai pembimbing <strong>PKL/teaching factory</strong>
+                        </li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">
+                            ✓ Stack yang dipake sehari-hari = <strong>sama persis</strong> dengan yang kita usulkan
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <div style="display: inline-block; background: var(--bg-card); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 20px 40px; box-shadow: var(--shadow-md);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">Website</div>
+                    <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--teal);">next-it.co.id</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Kenapa Ini Penting -->
+        <section class="slide" data-slide="7">
+            <p class="slide-label">REALITY CHECK</p>
+            <h2 class="slide-title">Industri IT 2026 — <span class="highlight">Reality Check</span></h2>
+            
+            <div class="data-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="data-card">
+                    <div class="data-value gold">80%</div>
+                    <div class="data-label">Developer global pakai AI tools setiap hari<br><em style="color: var(--text-muted); font-size: 0.85em;">Stack Overflow Survey 2025</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value success">+25%</div>
+                    <div class="data-label">AI skills naik gaji<br><em style="color: var(--text-muted); font-size: 0.85em;">Nodeflair 2026</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value teal">3x</div>
+                    <div class="data-label">Lowongan AI naik<br><em style="color: var(--text-muted); font-size: 0.85em;">IDStar 2026</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value danger">73%</div>
+                    <div class="data-label">Developer Indonesia belum punya AI skill<br><em style="color: var(--text-muted); font-size: 0.85em;">Peluang besar!</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value gold">69.7%</div>
+                    <div class="data-label">React/Next.js market share web<br><em style="color: var(--text-muted); font-size: 0.85em;">5.3 juta+ perusahaan</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value teal">#1</div>
+                    <div class="data-label">TypeScript di GitHub<br><em style="color: var(--text-muted); font-size: 0.85em;">GitHub Octoverse 2025</em></div>
+                </div>
+            </div>
+
+            <div style="background: var(--teal-subtle); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 28px 36px; margin-top: 40px; text-align: center;">
+                <p style="font-size: 1.1rem; color: var(--text); line-height: 1.7;">
+                    <strong style="color: var(--teal);">Kesimpulan:</strong> Skill yang industri butuh <strong>sudah bergeser drastis</strong> — tapi kurikulum SMK belum ikut bergerak. Ini peluang SMKN 1 Katapang jadi pionir.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 8: Daftar Gap -->
+        <section class="slide" data-slide="8">
+            <p class="slide-label">GAP ANALYSIS</p>
+            <h2 class="slide-title">Kurikulum PPLG Saat Ini vs <span class="highlight">Kebutuhan Industri</span></h2>
+            
+            <div style="max-width: 1100px; margin: 0 auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-top: 32px; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);">
+                    <thead>
+                        <tr style="background: var(--teal); color: white;">
+                            <th style="padding: 16px 20px; text-align: left; font-weight: 700;">Skill Industri 2026</th>
+                            <th style="padding: 16px 20px; text-align: center; font-weight: 700; width: 100px;">Di CP?</th>
+                            <th style="padding: 16px 20px; text-align: center; font-weight: 700; width: 120px;">Tingkat</th>
+                            <th style="padding: 16px 20px; text-align: left; font-weight: 700;">Dampak ke Lulusan</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 0.9em;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>React / Next.js</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">❌</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--danger-bg); color: var(--danger); font-weight: 700;">🔴 KRITIS</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Gagal di interview frontend</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>Git & GitHub</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">❌</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--danger-bg); color: var(--danger); font-weight: 700;">🔴 KRITIS</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Gak bisa kolaborasi tim</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>AI/LLM Integration</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">❌</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--danger-bg); color: var(--danger); font-weight: 700;">🔴 KRITIS</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Ketinggalan 3 tahun ke depan</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>TypeScript</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">❌</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--danger-bg); color: var(--danger); font-weight: 700;">🔴 KRITIS</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Kode ga scalable</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>Docker & Container</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">❌</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--danger-bg); color: var(--danger); font-weight: 700;">🔴 KRITIS</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Gak paham dev environment standar</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>Deployment & CI/CD</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">❌</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--warning-bg); color: var(--warning); font-weight: 700;">🔴 BESAR</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Portfolio cuma di localhost</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 14px 20px;"><strong>REST API & Postman</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">⚠️</td>
+                            <td style="padding: 14px 20px; text-align: center; background: var(--warning-bg); color: var(--warning); font-weight: 700;">🔴 BESAR</td>
+                            <td style="padding: 14px 20px; color: var(--text-secondary);">Gak bisa integrasi sistem</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border); background: var(--success-bg);">
+                            <td style="padding: 14px 20px;"><strong>HTML, CSS, JS, OOP, SQL</strong></td>
+                            <td style="padding: 14px 20px; text-align: center;">✅</td>
+                            <td style="padding: 14px 20px; text-align: center; color: var(--success); font-weight: 700;">✅ OK</td>
+                            <td style="padding: 14px 20px; color: var(--success); font-weight: 600;">Fondasi sudah bagus!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 9: Gap Visual -->
+        <section class="slide" data-slide="9">
+            <p class="slide-label">PRIORITAS</p>
+            <h2 class="slide-title">Ringkasan <span class="highlight">Prioritas Gap</span></h2>
+            <p class="slide-subtitle">Fondasi existing sudah sangat baik — yang kurang adalah teknologi modern yang industri pake setiap hari</p>
+            
+            <div style="max-width: 800px; margin: 40px auto;">
+                <div style="text-align: center;">
+                    <!-- Kritis -->
+                    <div style="background: var(--danger-bg); border: 2px solid var(--danger); border-radius: var(--radius-lg); padding: 28px 40px; margin-bottom: 20px;">
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--danger); margin-bottom: 12px;">🔴 KRITIS (5)</div>
+                        <div style="color: var(--text); font-weight: 600; line-height: 1.8;">
+                            React/Next.js • Git • AI/LLM • TypeScript • Docker
+                        </div>
+                    </div>
+                    
+                    <!-- Besar -->
+                    <div style="background: var(--warning-bg); border: 2px solid var(--warning); border-radius: var(--radius-lg); padding: 24px 40px; margin-bottom: 20px;">
+                        <div style="font-size: 1.5rem; font-weight: 800; color: var(--warning); margin-bottom: 12px;">🔴 BESAR (2)</div>
+                        <div style="color: var(--text); font-weight: 600; line-height: 1.8;">
+                            Deployment/CI/CD • REST API
+                        </div>
+                    </div>
+                    
+                    <!-- Sedang -->
+                    <div style="background: var(--gold-subtle); border: 2px solid var(--gold); border-radius: var(--radius-lg); padding: 20px 40px; margin-bottom: 20px;">
+                        <div style="font-size: 1.3rem; font-weight: 800; color: var(--gold); margin-bottom: 12px;">🟡 SEDANG (5)</div>
+                        <div style="color: var(--text); font-weight: 600; line-height: 1.8;">
+                            Tailwind • Agile • ORM/NoSQL • Cloud • Testing
+                        </div>
+                    </div>
+                    
+                    <!-- OK -->
+                    <div style="background: var(--success-bg); border: 2px solid var(--success); border-radius: var(--radius-lg); padding: 20px 40px;">
+                        <div style="font-size: 1.3rem; font-weight: 800; color: var(--success); margin-bottom: 12px;">✅ OK (4)</div>
+                        <div style="color: var(--text); font-weight: 600; line-height: 1.8;">
+                            HTML/CSS/JS • OOP • SQL • Mobile
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--teal-subtle); border-left: 4px solid var(--teal); border-radius: var(--radius); padding: 20px 28px; margin-top: 32px; max-width: 900px; margin-left: auto; margin-right: auto;">
+                <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">
+                    <strong style="color: var(--teal);">Catatan Penting:</strong> Ini bukan overhaul total — ini <strong>upgrade</strong>. Fondasi existing (HTML/CSS/JS, OOP, SQL) sudah sangat baik.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 10: Data Pendukung -->
+        <section class="slide" data-slide="10">
+            <p class="slide-label">RESEARCH-BASED</p>
+            <h2 class="slide-title">Semua Rekomendasi Berdasarkan <span class="highlight">Data</span></h2>
+            <p class="slide-subtitle">Bukan opini — ini riset komprehensif dari 10+ sumber kredibel</p>
+            
+            <div style="max-width: 1100px; margin: 32px auto;">
+                <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);">
+                    <thead>
+                        <tr style="background: var(--gold); color: white;">
+                            <th style="padding: 16px 20px; text-align: left; font-weight: 700;">Data</th>
+                            <th style="padding: 16px 20px; text-align: left; font-weight: 700; width: 280px;">Source</th>
+                            <th style="padding: 16px 20px; text-align: left; font-weight: 700;">Key Takeaway</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 0.88em;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>TPT SMK tertinggi 7,74%</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">BPS Sakernas Feb 2026</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Ada masalah serius di link & match</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>80% developer pake AI tools</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">Stack Overflow Survey 2025</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">AI bukan lagi opsional</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>React 69.7% market share</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">TechnologyChecker.io 2026</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Framework web paling dominan</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>Next.js 67% enterprise projects</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">Focus Reactive 2026</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Standar industri enterprise</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>TypeScript #1 by repo count</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">GitHub Octoverse 2025</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Harus jadi bahasa utama</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>AI skill +25% gaji</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">Nodeflair 2026 Indonesia</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Skill paling valuable</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>450+ Git jobs di Indonesia</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">Jobstreet/Indeed 2026</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Syarat mutlak kerja</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>Hanya 3,3% lowongan minta AI</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">H-Studio (1.282 listing)</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">AI ganti developer? Data bilang belum</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>56% developer pake container</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">Stack Overflow 2025</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Docker = standar dev environment</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 20px;"><strong>Struktur Kurikulum SMK</strong></td>
+                            <td style="padding: 12px 20px; color: var(--text-muted);">Kepmendikbudristek No.56/2022</td>
+                            <td style="padding: 12px 20px; color: var(--text-secondary);">Framework resmi yang bisa dijadikan acuan</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+        <!-- Slide 11: 5 Program Rekomendasi -->
+        <section class="slide" data-slide="11">
+            <p class="slide-label">SOLUSI</p>
+            <h2 class="slide-title">5 Program Konkret — <span class="highlight">Sinkronisasi PPLG × Next IT</span></h2>
+            
+            <div style="max-width: 1000px; margin: 40px auto; display: grid; gap: 24px;">
+                <div style="background: var(--gold-subtle); border: 2px solid var(--gold); border-radius: var(--radius-lg); padding: 32px 40px; display: flex; align-items: center; gap: 24px; box-shadow: var(--shadow-md);">
+                    <div style="width: 64px; height: 64px; background: var(--gold); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 800; flex-shrink: 0;">1</div>
+                    <div style="flex: 1;">
+                        <div style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: var(--text); margin-bottom: 8px;">AI & API Integration 🥇</div>
+                        <div style="color: var(--text-secondary); line-height: 1.6;">Prioritas Tertinggi — Differentiator terbesar</div>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 28px 40px; display: flex; align-items: center; gap: 24px;">
+                    <div style="width: 64px; height: 64px; background: var(--teal); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 800; flex-shrink: 0;">2</div>
+                    <div style="flex: 1;">
+                        <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 8px;">Modern Web Stack</div>
+                        <div style="color: var(--text-secondary); line-height: 1.6;">React + Next.js + TypeScript + Tailwind</div>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 28px 40px; display: flex; align-items: center; gap: 24px;">
+                    <div style="width: 64px; height: 64px; background: var(--teal); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 800; flex-shrink: 0;">3</div>
+                    <div style="flex: 1;">
+                        <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 8px;">Git & DevOps Pipeline</div>
+                        <div style="color: var(--text-secondary); line-height: 1.6;">GitHub + CI/CD + Deployment</div>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 28px 40px; display: flex; align-items: center; gap: 24px;">
+                    <div style="width: 64px; height: 64px; background: var(--teal); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 800; flex-shrink: 0;">4</div>
+                    <div style="flex: 1;">
+                        <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 8px;">Database Modern</div>
+                        <div style="color: var(--text-secondary); line-height: 1.6;">ORM + NoSQL + Cloud</div>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 28px 40px; display: flex; align-items: center; gap: 24px;">
+                    <div style="width: 64px; height: 64px; background: var(--teal); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 800; flex-shrink: 0;">5</div>
+                    <div style="flex: 1;">
+                        <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 8px;">Industry Exposure</div>
+                        <div style="color: var(--text-secondary); line-height: 1.6;">PKL standar dev, portofolio, soft skill</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Program 1 - AI & API -->
+        <section class="slide" data-slide="12">
+            <p class="slide-label">PROGRAM 1 🥇</p>
+            <h2 class="slide-title">AI & API Integration</h2>
+            <p class="slide-subtitle">73% developer Indonesia belum punya AI skill — skill paling dicari 2026</p>
+            
+            <div class="two-col">
+                <div class="col-card" style="border-left: 4px solid var(--danger);">
+                    <h3 style="color: var(--danger);">❌ Masalah</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">Zero AI/LLM integration di CP</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">73% developer Indonesia belum punya AI skill</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">Peluang +25% gaji terlewat</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="border-left: 4px solid var(--success);">
+                    <h3 style="color: var(--success);">✅ Solusi</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;"><strong>Kelas XI S2:</strong> OpenAI API, prompt engineering, fetch API</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;"><strong>Kelas XII S1:</strong> AI Agents (dasar), function calling, RAG dasar</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;"><strong>Proyek:</strong> Chat app, AI-assisted content generator</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="data-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 32px;">
+                <div class="data-card">
+                    <div class="data-value teal">3x</div>
+                    <div class="data-label">Lowongan AI naik<br><em style="font-size: 0.85em; color: var(--text-muted);">Nodeflair</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value success">+25%</div>
+                    <div class="data-label">Gaji lebih tinggi<br><em style="font-size: 0.85em; color: var(--text-muted);">Nodeflair Indonesia</em></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-value gold">80%</div>
+                    <div class="data-label">Developer pake AI<br><em style="font-size: 0.85em; color: var(--text-muted);">Stack Overflow</em></div>
+                </div>
+            </div>
+
+            <div style="background: var(--gold-subtle); border: 2px solid var(--gold); border-radius: var(--radius-lg); padding: 24px 32px; margin-top: 32px; text-align: center;">
+                <p style="color: var(--text); font-size: 1.05rem; line-height: 1.7; margin: 0;">
+                    <strong style="color: var(--gold);">Unik:</strong> Belum ada SMK lain yang punya ini — <strong>differentiator terbesar</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Program 2 - Modern Web Stack -->
+        <section class="slide" data-slide="13">
+            <p class="slide-label">PROGRAM 2</p>
+            <h2 class="slide-title">Modern Web Stack</h2>
+            <p class="slide-subtitle">Zero React/Next.js & TypeScript di CP — padahal 69.7% market share</p>
+            
+            <div class="two-col">
+                <div class="col-card">
+                    <h3 style="color: var(--teal);">📚 Solusi</h3>
+                    <ul>
+                        <li><strong>Kelas XI S1:</strong> React dasar + TypeScript + Tailwind CSS</li>
+                        <li><strong>Kelas XI S2:</strong> Next.js + SSR + routing + API routes + deploy</li>
+                        <li><strong>Tools:</strong> Vercel, Postman, GitHub</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--teal-subtle); border-color: var(--teal);">
+                    <h3 style="color: var(--teal);">📊 Data Pendukung</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ React 69.7% market share</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ 5.3 juta+ perusahaan pake React</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ Next.js 67% enterprise React projects</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ TypeScript #1 di GitHub</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; text-align: center;">
+                <div style="display: inline-block; background: var(--bg-card); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 28px 48px; box-shadow: var(--shadow-md);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 600;">DAMPAK</div>
+                    <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--teal); line-height: 1.4;">Lulusan langsung marketable</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Program 3 - Git & DevOps -->
+        <section class="slide" data-slide="14">
+            <p class="slide-label">PROGRAM 3</p>
+            <h2 class="slide-title">Git & DevOps Pipeline</h2>
+            <p class="slide-subtitle">Zero Git — fundamental daily driver — 0% lulusan bisa kerja tanpa ini</p>
+            
+            <div class="two-col">
+                <div class="col-card">
+                    <h3 style="color: var(--teal);">📚 Solusi</h3>
+                    <ul>
+                        <li><strong>Kelas X:</strong> Git dasar (init, add, commit, push)</li>
+                        <li><strong>Kelas XI:</strong> Branching, merge, PR, GitHub workflow, code review</li>
+                        <li><strong>Kelas XII:</strong> CI/CD dengan GitHub Actions, Docker production</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--success-bg); border-color: var(--success);">
+                    <h3 style="color: var(--success);">✅ Kenapa Penting</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ 450+ lowongan Git jobs di Indonesia</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ Ada di >90% job description developer</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ 56% developer pake container (Docker)</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.9;">✓ 100% gratis (GitHub, Docker)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <div style="background: var(--teal-subtle); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 32px 40px; text-align: center;">
+                    <p style="font-size: 1.15rem; color: var(--text); line-height: 1.7; margin: 0;">
+                        <strong style="color: var(--teal);">Nol biaya — 100% gratis.</strong> Syarat mutlak kerja. 2-3 pertemuan cukup untuk dasar.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Program 4 - Database Modern -->
+        <section class="slide" data-slide="15">
+            <p class="slide-label">PROGRAM 4</p>
+            <h2 class="slide-title">Database Modern</h2>
+            <p class="slide-subtitle">SQL manual kuat tapi zero ORM & NoSQL</p>
+            
+            <div class="two-col">
+                <div class="col-card">
+                    <h3 style="color: var(--teal);">📚 Solusi</h3>
+                    <ul>
+                        <li><strong>Kelas XI:</strong> SQL manual tetap (fondasi) + Prisma ORM</li>
+                        <li><strong>Kelas XII:</strong> Supabase/Firebase (NoSQL, real-time, auth)</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--gold-subtle); border-color: var(--gold);">
+                    <h3 style="color: var(--gold);">⭐ Prinsip</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8; margin: 0;">
+                        SQL manual tetap diajar — <strong>ORM di atas SQL, bukan ganti SQL</strong>. Fondasi SQL tetap fundamental, ORM hanya mempermudah development modern.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; text-align: center;">
+                <div style="background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 32px; max-width: 800px; margin: 0 auto;">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">YANG TIDAK BERUBAH</div>
+                    <p style="font-size: 1.1rem; color: var(--text); line-height: 1.7; margin: 0;">
+                        SQL manual tetap jadi fondasi. Lulusan harus paham <strong>query raw, join, aggregate, subquery</strong>. ORM hanya tools — kalau SQL lemah, ORM jadi masalah.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Program 5 - Industry Exposure -->
+        <section class="slide" data-slide="16">
+            <p class="slide-label">PROGRAM 5</p>
+            <h2 class="slide-title">Industry Exposure & Soft Skill</h2>
+            <p class="slide-subtitle">CP sudah ada Technopreneurship tapi ga ada exposure industri nyata</p>
+            
+            <div style="max-width: 1000px; margin: 32px auto; display: grid; gap: 20px;">
+                <div class="col-card">
+                    <h3 style="color: var(--teal); margin-bottom: 16px;">🎯 Solusi</h3>
+                    <ul>
+                        <li><strong>Guest speaker</strong> — developer Next IT atau mitra</li>
+                        <li><strong>PKL standar dev</strong> — bukan IT support tapi beneran coding di project real</li>
+                        <li><strong>Portofolio digital</strong> — CV, LinkedIn, GitHub profile, portfolio website</li>
+                        <li><strong>Tech interview simulasi</strong> — coding test, behavioral</li>
+                        <li><strong>English for Tech</strong> — dokumentasi, API docs, Stack Overflow, prompt LLM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: var(--teal-subtle); border-left: 4px solid var(--teal); border-radius: var(--radius); padding: 24px 32px; margin-top: 32px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+                <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">
+                    <strong style="color: var(--teal);">Value Next IT:</strong> Bisa kirim langsung praktisi sebagai pembimbing PKL/teaching factory. Lulusan magang di project real — bukan cuma observasi, tapi <strong>coding bareng tim</strong>.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+        <!-- Slide 17: Kelas X -->
+        <section class="slide" data-slide="17">
+            <p class="slide-label">BREAKDOWN PER SEMESTER</p>
+            <h2 class="slide-title">Kelas X — Fase E <span class="highlight">(Fondasi)</span></h2>
+            <p class="slide-subtitle">Quick Win Semester 1 — perubahan langsung implementable</p>
+            
+            <div class="two-col">
+                <div class="col-card" style="background: var(--success-bg); border-color: var(--success);">
+                    <h3 style="color: var(--success);">✅ Semester 1 — Tambah</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ Python sbg bahasa pertama</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ VS Code + Git intro</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ AI tools awareness (ChatGPT untuk coding)</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ Agile mindset dasar (1 sprint mini)</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--warning-bg); border-color: var(--warning);">
+                    <h3 style="color: var(--warning);">⚠️ Semester 1 — Kurangi</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">→ Teori cloud abstrak dipadatkan</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">→ SDLC waterfall dipadatkan → Agile mindset</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="two-col" style="margin-top: 24px;">
+                <div class="col-card" style="background: var(--success-bg); border-color: var(--success);">
+                    <h3 style="color: var(--success);">✅ Semester 2 — Tambah</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ OOP dengan Python</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ Proyek mini (todo list, kalkulator)</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ Code review teman sejawat</li>
+                        <li style="padding-left: 0; border: none; color: var(--text-secondary); line-height: 1.8;">✓ Algoritma flowchart digital (draw.io/Figma)</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--teal-subtle); border-color: var(--teal);">
+                    <h3 style="color: var(--teal);">⚙️ Yang TETAP</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8; margin: 0;">
+                        Algoritma flowchart, pemrograman terstruktur, OOP, HTML/CSS/JS dasar, K3LH, technopreneurship
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Kelas XI -->
+        <section class="slide" data-slide="18">
+            <p class="slide-label">BREAKDOWN PER SEMESTER</p>
+            <h2 class="slide-title">Kelas XI — Fase F <span class="highlight">(Transformasi 🚀)</span></h2>
+            <p class="slide-subtitle">Perubahan terbesar — React, TypeScript, Git, Docker, AI</p>
+            
+            <div class="two-col">
+                <div class="col-card" style="background: var(--danger-bg); border-left: 4px solid var(--danger);">
+                    <h3 style="color: var(--danger);">🔴 Semester 1 — Tambah (Perubahan Terbesar)</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li><strong>Git & GitHub</strong> — branching, commit, PR</li>
+                        <li><strong>TypeScript + React dasar</strong> — komponen, props, state</li>
+                        <li><strong>Tailwind CSS</strong> — utility-first</li>
+                        <li><strong>Docker Fundamental</strong> — container, Dockerfile</li>
+                        <li><strong>ORM (Prisma)</strong> — konsep + praktik</li>
+                        <li><strong>Agile/Scrum</strong> — sprint simulasi</li>
+                    </ul>
+                </div>
+                <div class="col-card">
+                    <h3 style="color: var(--warning);">⚠️ Semester 1 — Kurangi</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li>UML 14 diagram → 4 utama</li>
+                        <li>Stored procedure detail dipadatkan</li>
+                        <li>GUI library abstrak → React</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="two-col" style="margin-top: 24px;">
+                <div class="col-card" style="background: var(--gold-subtle); border-left: 4px solid var(--gold);">
+                    <h3 style="color: var(--gold);">🥇 Semester 2 — AI & Deploy</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li><strong>Next.js</strong> — SSR, routing, data fetching, API routes</li>
+                        <li><strong>AI/LLM Integration</strong> — OpenAI API, prompt engineering</li>
+                        <li><strong>Deployment Vercel</strong> — custom domain, env variables</li>
+                        <li><strong>Docker Compose</strong> — multi-service (Next.js + PostgreSQL)</li>
+                        <li><strong>TypeScript lanjutan</strong> — generics, interfaces</li>
+                        <li><strong>Postman/Swagger</strong> — API testing & docs</li>
+                        <li><strong>Proyek akhir:</strong> fullstack web app + AI + Docker + deploy</li>
+                    </ul>
+                </div>
+                <div class="col-card">
+                    <h3 style="color: var(--warning);">⚠️ Semester 2 — Kurangi</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li>HTML/CSS/JS panjang dipadatkan</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Kelas XII -->
+        <section class="slide" data-slide="19">
+            <p class="slide-label">BREAKDOWN PER SEMESTER</p>
+            <h2 class="slide-title">Kelas XII — Fase F <span class="highlight">(Advance & Siap Kerja)</span></h2>
+            
+            <div class="two-col">
+                <div class="col-card" style="background: var(--teal-subtle); border-color: var(--teal);">
+                    <h3 style="color: var(--teal);">🔧 Semester 1 — Tambah</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li><strong>CI/CD (GitHub Actions)</strong> — auto-deploy on push</li>
+                        <li><strong>Docker Production</strong> — multi-stage, Docker Compose prod</li>
+                        <li><strong>AI Agents (dasar)</strong> — function calling, tool use</li>
+                        <li><strong>NoSQL (Supabase/Firebase)</strong> — real-time, auth</li>
+                        <li><strong>Basic testing</strong> — unit test (Jest/Vitest), E2E (Playwright)</li>
+                        <li><strong>Portofolio project:</strong> fullstack + AI + deployed + dokumen</li>
+                    </ul>
+                </div>
+                <div class="col-card">
+                    <h3 style="color: var(--warning);">⚠️ Semester 1 — Kurangi</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li>Backup DB manual dipadatkan</li>
+                        <li>Replikasi DB → konsep saja</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="two-col" style="margin-top: 24px;">
+                <div class="col-card" style="background: var(--success-bg); border-color: var(--success);">
+                    <h3 style="color: var(--success);">✅ Semester 2 — Persiapan Karir</h3>
+                    <ul style="font-size: 0.9em;">
+                        <li><strong>Persiapan karir</strong> — CV digital, LinkedIn, GitHub</li>
+                        <li><strong>Soft skill industri</strong> — komunikasi, presentasi</li>
+                        <li><strong>Tech interview simulasi</strong> — coding test, behavioral</li>
+                        <li><strong>English for Tech</strong> — dokumentasi, prompt LLM inggris</li>
+                        <li><strong>PKL Standar Developer</strong> — coding project real</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--gold-subtle); border-color: var(--gold);">
+                    <h3 style="color: var(--gold);">🎯 Output Akhir</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8; margin: 0;">
+                        Lulusan punya: <strong>GitHub portfolio dengan 3+ deployed projects, CV digital, LinkedIn profile, tech interview experience</strong>. Siap apply kerja hari pertama lulus.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Vision 2027-2030 -->
+        <section class="slide" data-slide="20">
+            <p class="slide-label">VISION</p>
+            <h2 class="slide-title">Ke Mana Arah Industri <span class="highlight">2027-2030?</span></h2>
+            
+            <div style="max-width: 1000px; margin: 32px auto;">
+                <div class="col-card" style="background: var(--teal-subtle); border-left: 4px solid var(--teal); margin-bottom: 24px;">
+                    <h3 style="color: var(--teal); margin-bottom: 16px;">📅 2027-2028 (Jangka Pendek)</h3>
+                    <ul>
+                        <li>AI coding assistant jadi default — bukan tools tambahan</li>
+                        <li>AI-augmented testing — TDD jadi kebiasaan</li>
+                        <li>API-first & Headless Architecture — arsitektur default</li>
+                        <li>Cybersecurity jadi syarat dasar (OWASP Top 10)</li>
+                    </ul>
+                </div>
+
+                <div class="col-card" style="background: var(--gold-subtle); border-left: 4px solid var(--gold); margin-bottom: 32px;">
+                    <h3 style="color: var(--gold); margin-bottom: 16px;">📅 2029-2030 (Jangka Menengah)</h3>
+                    <ul>
+                        <li>AI-Human Collaborative Engineering — programmer sebagai "orchestrator"</li>
+                        <li>AI generate 70-80% kode — skill baca, review, debug jadi pembeda</li>
+                        <li>Peran baru: Prompt Engineer, AI QA Engineer, AI-Assisted Developer</li>
+                        <li>AI-native apps — AI sebagai core, bukan add-on</li>
+                    </ul>
+                </div>
+
+                <div class="col-card" style="background: var(--success-bg); border: 2px solid var(--success);">
+                    <h3 style="color: var(--success); margin-bottom: 16px;">✅ Yang PASTI Tidak Berubah</h3>
+                    <ul style="font-size: 0.95em;">
+                        <li><strong>Logika & algoritma</strong> — AI bisa generate, gak bisa ganti problem solving</li>
+                        <li><strong>SQL</strong> — ORM wrapper, SQL tetap fundamental</li>
+                        <li><strong>HTML/CSS/JS</strong> — web tidak kemana-mana</li>
+                        <li><strong>Git</strong> — kolaborasi tidak mungkin tanpa version control</li>
+                        <li><strong>Soft skills</strong> — komunikasi, kolaborasi, critical thinking</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 21: Implementation Roadmap -->
+        <section class="slide" data-slide="21">
+            <p class="slide-label">ROADMAP</p>
+            <h2 class="slide-title">Roadmap Implementasi — <span class="highlight">3 Fase</span></h2>
+            
+            <div style="max-width: 1100px; margin: 32px auto;">
+                <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 24px;">
+                    <thead>
+                        <tr style="background: var(--success); color: white;">
+                            <th colspan="3" style="padding: 16px 20px; text-align: left; font-weight: 700;">Fase 1 — Quick Win (Semester 1, Kelas X)</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 0.9em;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>Python sebagai bahasa pertama</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; width: 120px; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; width: 150px; color: var(--text-muted);">1 minggu</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>VS Code + Git dasar</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">1-2 pertemuan</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>AI tools awareness</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">1 pertemuan</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 20px;"><strong>Agile mindset simulasi</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">2 pertemuan</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 24px;">
+                    <thead>
+                        <tr style="background: var(--gold); color: white;">
+                            <th colspan="3" style="padding: 16px 20px; text-align: left; font-weight: 700;">Fase 2 — Transformasi (Semester 2-3, Kelas XI)</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 0.9em;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>TypeScript + React + Tailwind</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; width: 120px; color: var(--warning); font-weight: 700;">🟡 Training guru</td>
+                            <td style="padding: 12px 20px; text-align: center; width: 150px; color: var(--text-muted);">1 semester</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>GitHub + PR workflow</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">3-4 pertemuan</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>AI/LLM + Next.js + Deploy</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--warning); font-weight: 700;">🟡 API key ~$5/siswa</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">1 semester</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);">
+                    <thead>
+                        <tr style="background: var(--teal); color: white;">
+                            <th colspan="3" style="padding: 16px 20px; text-align: left; font-weight: 700;">Fase 3 — Advanced (Semester 4-6, Kelas XII)</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 0.9em;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>CI/CD GitHub Actions</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; width: 120px; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; width: 150px; color: var(--text-muted);">3-4 pertemuan</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 12px 20px;"><strong>Docker Production</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--warning); font-weight: 700;">🟡 VPS ~$5-10/bln</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">3-4 pertemuan</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 20px;"><strong>Persiapan Karir</strong></td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--success); font-weight: 700;">✅ Nol</td>
+                            <td style="padding: 12px 20px; text-align: center; color: var(--text-muted);">2-3 pertemuan</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 22: 3 Prioritas Paling Berdampak -->
+        <section class="slide" data-slide="22">
+            <p class="slide-label">TOP PRIORITIES</p>
+            <h2 class="slide-title">3 Hal yang <span class="highlight">Paling Berdampak</span></h2>
+            
+            <div style="max-width: 1000px; margin: 32px auto; display: grid; gap: 28px;">
+                <div style="background: var(--gold-subtle); border: 3px solid var(--gold); border-radius: var(--radius-lg); padding: 36px 40px; box-shadow: var(--shadow-md);">
+                    <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--gold); margin-bottom: 16px;">🥇 #1: Git + GitHub + Docker</div>
+                    <ul style="font-size: 1.05em; line-height: 2;">
+                        <li><strong>Nol biaya</strong> — 100% gratis</li>
+                        <li><strong>Syarat mutlak kerja</strong> — 450+ lowongan, >90% job description</li>
+                        <li><strong>56% developer</strong> pake container</li>
+                        <li><strong>2-3 pertemuan</strong> cukup untuk dasar</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--teal-subtle); border: 3px solid var(--teal); border-radius: var(--radius-lg); padding: 36px 40px; box-shadow: var(--shadow-md);">
+                    <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--teal); margin-bottom: 16px;">🥈 #2: React/Next.js + TypeScript</div>
+                    <ul style="font-size: 1.05em; line-height: 2;">
+                        <li><strong>69.7% market share</strong> JS frameworks</li>
+                        <li><strong>5.3 juta+ perusahaan</strong> pake React</li>
+                        <li><strong>Next.js 67%</strong> enterprise projects baru</li>
+                        <li><strong>Lulusan langsung marketable</strong></li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--success-bg); border: 3px solid var(--success); border-radius: var(--radius-lg); padding: 36px 40px; box-shadow: var(--shadow-md);">
+                    <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--success); margin-bottom: 16px;">🥉 #3: AI/LLM Integration</div>
+                    <ul style="font-size: 1.05em; line-height: 2;">
+                        <li><strong>Differentiator terbesar</strong> — belum ada SMK lain yang punya ini</li>
+                        <li><strong>+25% gaji</strong> dari AI skill (Nodeflair)</li>
+                        <li><strong>3x lipat lowongan</strong> AI (IDStar)</li>
+                        <li><strong>73% developer Indonesia</strong> belum punya skill ini</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+        <!-- Slide 23: Format Sinkronisasi -->
+        <section class="slide" data-slide="23">
+            <p class="slide-label">FORMAT</p>
+            <h2 class="slide-title">Format Penyelarasan — <span class="highlight">Siap Diisi Bareng</span></h2>
+            
+            <div class="two-col">
+                <div class="col-card" style="background: var(--teal-subtle); border-color: var(--teal);">
+                    <h3 style="color: var(--teal); margin-bottom: 16px;">📋 Dokumen yang Dibawa</h3>
+                    <ul>
+                        <li>Format standar penyelarasan kurikulum SMK dengan IDUKA</li>
+                        <li>18 baris item gap — tinggal diisi rekomendasi dan prioritas</li>
+                        <li>Kolom: mata pelajaran → CP existing → kompetensi industri → gap → rekomendasi perubahan</li>
+                        <li>Siap diisi bersama tim sekolah</li>
+                        <li>Bisa langsung diisi hari ini atau dibawa pulang untuk didiskusikan</li>
+                    </ul>
+                </div>
+                <div class="col-card" style="background: var(--gold-subtle); border-color: var(--gold);">
+                    <h3 style="color: var(--gold); margin-bottom: 16px;">📦 Dokumen Pendukung (Fisik)</h3>
+                    <ul style="font-size: 0.95em;">
+                        <li><strong>Format penyelarasan kosong</strong> — Cetak A4 (5-10 lembar)</li>
+                        <li><strong>Slide deck ini</strong> — Cetak / PDF</li>
+                        <li><strong>Summary gap analysis</strong> — 1 halaman A4</li>
+                        <li><strong>Profil Next IT</strong> — 1 halaman</li>
+                        <li><strong>1-pager data kunci</strong> — Infografis data utama</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 32px; margin-top: 40px; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto;">
+                <p style="font-size: 1.1rem; color: var(--text); line-height: 1.7; margin: 0;">
+                    Format ini <strong>siap diisi bareng</strong> di meeting hari ini — tinggal diskusi kolom per kolom, kesepakatan program mana yang dijalankan duluan.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 24: Next Steps -->
+        <section class="slide" data-slide="24">
+            <p class="slide-label">NEXT STEPS</p>
+            <h2 class="slide-title">Langkah <span class="highlight">Selanjutnya</span></h2>
+            
+            <div style="max-width: 900px; margin: 40px auto;">
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 36px; display: flex; align-items: flex-start; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--teal); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; font-weight: 700; flex-shrink: 0;">1</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text); margin-bottom: 8px; font-size: 1.1rem;">Diskusi & Tanya Jawab</div>
+                            <div style="color: var(--text-secondary); line-height: 1.7;">Klarifikasi dari pihak sekolah — apa yang kurang jelas, apa yang perlu disesuaikan</div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 36px; display: flex; align-items: flex-start; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--teal); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; font-weight: 700; flex-shrink: 0;">2</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text); margin-bottom: 8px; font-size: 1.1rem;">Isi Format Penyelarasan Bareng</div>
+                            <div style="color: var(--text-secondary); line-height: 1.7;">Cetak fisik, isi kolom per kolom — mata pelajaran, CP, gap, rekomendasi</div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 36px; display: flex; align-items: flex-start; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; font-weight: 700; flex-shrink: 0;">3</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text); margin-bottom: 8px; font-size: 1.1rem;">Kesepakatan Program</div>
+                            <div style="color: var(--text-secondary); line-height: 1.7;">Program mana yang mau dijalankan duluan — prioritas quick win vs transformasi</div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 36px; display: flex; align-items: flex-start; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--teal); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; font-weight: 700; flex-shrink: 0;">4</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text); margin-bottom: 8px; font-size: 1.1rem;">Jadwal Tindak Lanjut</div>
+                            <div style="color: var(--text-secondary); line-height: 1.7;">Kapan mulai, siapa PIC dari sekolah, siapa PIC dari Next IT</div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 36px; display: flex; align-items: flex-start; gap: 20px;">
+                        <div style="width: 48px; height: 48px; background: var(--teal); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; font-weight: 700; flex-shrink: 0;">5</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--text); margin-bottom: 8px; font-size: 1.1rem;">Tanda Tangan MoU/Kerjasama</div>
+                            <div style="color: var(--text-secondary); line-height: 1.7;">(jika diperlukan)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 25: Penutup -->
+        <section class="slide" data-slide="25">
+            <div class="cover-decoration"></div>
+            <div class="cover-content">
+                <h1 style="font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; color: var(--text); margin-bottom: 32px;">
+                    Mari Sinkronkan <span style="background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Masa Depan</span>
+                </h1>
+
+                <div style="background: var(--bg-card); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 40px; max-width: 600px; margin: 0 auto 40px; box-shadow: var(--shadow-md);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">KONTAK</div>
+                    <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--text); margin-bottom: 8px;">Pratomo Bowo Leksono</div>
+                    <div style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 20px;">Chief Business Officer</div>
+                    <div style="color: var(--teal); font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;">PT Niaga Expert Teknologi</div>
+                    <div style="display: flex; gap: 24px; justify-content: center; margin-top: 24px; flex-wrap: wrap;">
+                        <div style="color: var(--text-secondary); font-size: 1rem;">
+                            <strong style="color: var(--text);">Email:</strong> bowo@next-it.co.id
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 1rem;">
+                            <strong style="color: var(--text);">Web:</strong> next-it.co.id
+                        </div>
+                    </div>
+                </div>
+
+                <div style="font-size: 2rem; color: var(--gold); font-weight: 700;">Terima kasih 🙏</div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="nav">
+        <button class="nav-btn" id="prevBtn">←</button>
+        <span class="slide-counter" id="slideCounter">1 / 25</span>
+        <button class="nav-btn" id="nextBtn">→</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+        const slideCounter = document.getElementById('slideCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+
+        function updateSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+            slideCounter.textContent = `${index + 1} / ${slides.length}`;
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide(currentSlide);
+            }
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) nextSlide();
+            else if (touchEndX - touchStartX > 50) prevSlide();
+        });
+
+        updateSlide(0);
+    </script>
+</body>
+</html>
